@@ -1,5 +1,7 @@
 const express = require('express');
 const db = require('./config/connection');
+const api_routes = require('./routes/api_routes')
+const thought_routes = require('./routes/thought_routes')
 
 
 const PORT = process.env.PORT || 3001;
@@ -8,8 +10,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/api', api_routes)
+app.use('/api', api_routes, thought_routes)
 
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+
+db.once('open', () => {
+    app.listen(PORT, () => {
+        console.log(`Listening on port ${PORT}`);
+    })
 })

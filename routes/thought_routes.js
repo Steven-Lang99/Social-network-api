@@ -19,28 +19,31 @@ api_router.get('/thoughts/:id', async (req, res) => {
 //POST creat new thought
 api_router.post('/thoughts', async (req, res) => {
     const { user_id } = req.body
-    const users = await User.findOne({ _id: user_id })
+    const user = await User.findOne({ _id: user_id })
     const thoughts = await Thought.create({
         thoughtText: req.body.thoughtText,
-        username: req.body.username,
+        username: user.username,
     });
 
-    users.thoughts.push(thoughts._id)
-    users.save()
+    user.thoughts.push(thoughts._id)
+    user.save()
 
-    res.send(users)
+    res.send(user)
 
 })
-//PUT update user by id
+//PUT update thought by id
 api_router.put('/thoughts/:id', async (req, res) => {
-    const thoughts = await Thought.findOneAndUpdate({ _id: req.params.id })
+    const thoughts = await Thought.findOneAndUpdate({ _id: req.params.id },
+        {
+            thoughtText: req.body.thoughtText,
+        }, { new: true })
 
     res.send(thoughts)
 })
 
 //DELETE thought by id
 api_router.delete('/thoughts/:id', async (req, res) => {
-    const thoughts = await Thought.findOne({ _id: req.params.id })
+    const thoughts = await Thought.findOneAndDelete({ _id: req.params.id })
 
     res.send(thoughts)
 })

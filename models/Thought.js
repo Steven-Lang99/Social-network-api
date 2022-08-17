@@ -41,4 +41,6 @@ const thoughtSchema = new Schema({
 
 const Thought = model('Thought', thoughtSchema)
 
+// Thought.deleteMany({}).then(() => console.log('Thought deleted'));
+
 module.exports = Thought

@@ -26,4 +26,6 @@ const userSchema = new Schema({
 
 const User = model('User', userSchema)
 
+// User.deleteMany({}).then(() => console.log('user deleted'));
+
 module.exports = User;

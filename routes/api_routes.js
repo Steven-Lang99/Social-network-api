@@ -5,7 +5,7 @@ const User = require('../models/User');
 //GET a user
 api_router.get('/users', async (req, res) => {
     const users = await User.find()
-
+    // console.log(users)
     res.send(users);
 
 });
@@ -26,14 +26,23 @@ api_router.post('/users', async (req, res) => {
 })
 //PUT update user by id
 api_router.put('/users/:id', async (req, res) => {
-    const users = await User.findOneAndUpdate({ _id: req.params.id })
+    const users = await User.findOneAndUpdate({
+        _id: req.params.id
+    },
+        {
+            username: req.body.username,
+            email: req.body.email
+        }, { new: true })
+
 
     res.send(users)
 })
 
 //delete user by id
 api_router.delete('/users/:id', async (req, res) => {
-    const users = await User.findOne({ _id: req.params.id })
+    const users = await User.findOneAndDelete({
+        _id: req.params.id
+    })
 
     res.send(users)
 })
@@ -41,7 +50,7 @@ api_router.delete('/users/:id', async (req, res) => {
 
 //Add new friend
 api_router.post('/users/:userId/friends/:friendId', async (req, res) => {
-    const users = await User.findOne({ _id: req.body.id })
+    const users = await User.findOne({ _id: req.params.id })
 
     res.send(users)
 })

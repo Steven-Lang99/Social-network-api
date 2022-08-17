@@ -10,7 +10,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/api', api_routes, thought_routes)
+app.use('/api', [api_routes, thought_routes])
 
 
 db.once('open', () => {

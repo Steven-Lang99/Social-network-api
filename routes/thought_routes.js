@@ -45,16 +45,29 @@ api_router.put('/thoughts/:id', async (req, res) => {
 api_router.delete('/thoughts/:id', async (req, res) => {
     const thoughts = await Thought.findOneAndDelete({ _id: req.params.id })
 
-    res.send(thoughts)
+    res.send('Thought deleted')
 })
 
 //Add a reaction to thought
 api_router.post('/thoughts/:thoughtId/reactions', async (req, res) => {
+    const thoughts = await Thought.findOneAndUpdate({ _id: req.params.id });
+
+    thoughts.reactions.push(req.body)
+    thoughts.save()
+
+    res.send(thoughts)
 
 })
 
 //remove reaction
 api_router.delete('/thoughts/:thoughtId/reactions', async (req, res) => {
+    const thoughts = await Thought.findOneAndUpdate({ _id: req.params.id });
 
+    thoughts.reactions.remove(req.body)
+    thoughts.save()
+
+    res.send('Reaction deleted')
 })
+
+
 module.exports = api_router

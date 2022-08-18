@@ -44,22 +44,28 @@ api_router.delete('/users/:id', async (req, res) => {
         _id: req.params.id
     })
 
-    res.send(users)
+    res.send('User Deleted')
 })
 
 
 //Add new friend
 api_router.post('/users/:userId/friends/:friendId', async (req, res) => {
-    const users = await User.findOne({ _id: req.params.id })
+    const users = await User.findOneAndUpdate({ _id: req.params.id })
+
+    users.friends.push(users._id)
+    users.save()
 
     res.send(users)
 })
 
 //remove friend
 api_router.delete('/users/:userId/friends/:friendId', async (req, res) => {
-    const users = await User.findOne({ _id: req.body.id })
+    const users = await User.findOneAndUpdate({ _id: req.params.id })
 
-    res.send(users)
+    users.friends.remove(users._id)
+    users.save()
+
+    res.send('Friend removed')
 })
 
 module.exports = api_router
